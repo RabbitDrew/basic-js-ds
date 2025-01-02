@@ -19,30 +19,53 @@ class BinarySearchTree {
     if (!this.rootNode) {
        this.rootNode = newNode
     }else {
-       const searchTree = node => {
+       const addNewNode = node => {
           if (data < node.data) {
              if (!node.left) {
                 node.left = newNode
              }else {
-                 searchTree(node.left)
+              addNewNode(node.left)
              }
           }else if (data > node.data) {
              if (!node.right) {
                 node.right = newNode
              }else {
-                 searchTree(node.right)
+              addNewNode(node.right)
              }
           }
        }
-       searchTree (this.rootNode)
+       addNewNode (this.rootNode)
     }
 
  }
 
-  has(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
-  }
+ has(data) {
+  if (!this.rootNode) {
+     return false
+  }else {
+     const searchNode = node => {
+        if (node.data === data) {
+          return true;
+        } else {
+          if (data < node.data) {
+            if (!node.left) {
+              return false; 
+            } else {
+              return searchNode(node.left); 
+            }
+          } 
+          else if (data > node.data) {
+            if (!node.right) {
+              return false; 
+            } else {
+              return searchNode(node.right);
+            }
+          }
+        }
+      };
+      return searchNode(this.rootNode);
+    }
+}
 
   find(/* data */) {
     throw new NotImplementedError('Not implemented');
