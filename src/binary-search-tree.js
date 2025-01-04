@@ -95,46 +95,45 @@ find(data) {
 }
 
 remove(data) {
-   this.rootNode = removeNode(this.rootNode, data);
- 
-   function removeNode(node, data) {
-     if (!node) {
-       return null;
-     }
- 
-     if (data < node.data) {
-       node.left = removeNode(node.left, data);
-       return node;
-     } else if (data > node.data) {
-       node.right = removeNode(node.right, data);
-       return node;
-     } else {
+  let copyRoot = this.rootNode;
+  if (!this.rootNode) {
+    return null;
+  } else {
+    const removeNode = (node, data) => {
+      if (!node) {
+        return null;
+      } else {
+        if (data === node.data) {
+          if (!node.left && !node.right) {
+            return null; 
+          } else if (!node.left && node.right) {
+            return node.right; 
+          } else if (node.left && !node.right) {
+            return node.left;
+          } else if (node.left && node.right) {
+            let minNode = findMinNode(node.right); 
+            node.data = minNode.data; 
+            node.right = removeNode(node.right, minNode.data); 
+          }
+        } else if (data < node.data) {
+          node.left = removeNode(node.left, data); 
+        } else {
+          node.right = removeNode(node.right, data); 
+        }
+        return node;
+      }
+    };
 
-       if (!node.left && !node.right) {
-         return null;
-       }
+    const findMinNode = (node) => {
+      while (node.left !== null) {
+        node = node.left;
+      }
+      return node;
+    };
+    this.rootNode = removeNode(copyRoot, data);
+  }
+}
 
-       if (!node.left) {
-         return node.right;
-       }
-       if (!node.right) {
-         return node.left;
-       }
-
-       let minRight = findMinNode(node.right);
-       node.data = minRight.data;
-       node.right = removeNode(node.right, minRight.data);
-       return node;
-     }
-   }
- 
-   function findMinNode(node) {
-     while (node.left !== null) {
-       node = node.left;
-     }
-     return node;
-   }
- }
 
  min() {
    let currentNode = this.rootNode;
@@ -155,4 +154,4 @@ remove(data) {
 
 module.exports = {
   BinarySearchTree
-};
+}
