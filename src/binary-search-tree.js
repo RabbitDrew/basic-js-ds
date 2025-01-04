@@ -94,19 +94,62 @@ find(data) {
   }
 }
 
-  remove(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
-  }
+remove(data) {
+   this.rootNode = removeNode(this.rootNode, data);
+ 
+   function removeNode(node, data) {
+     if (!node) {
+       return null;
+     }
+ 
+     if (data < node.data) {
+       node.left = removeNode(node.left, data);
+       return node;
+     } else if (data > node.data) {
+       node.right = removeNode(node.right, data);
+       return node;
+     } else {
 
-  min() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+       if (!node.left && !node.right) {
+         return null;
+       }
+
+       if (!node.left) {
+         return node.right;
+       }
+       if (!node.right) {
+         return node.left;
+       }
+
+       let minRight = findMinNode(node.right);
+       node.data = minRight.data;
+       node.right = removeNode(node.right, minRight.data);
+       return node;
+     }
+   }
+ 
+   function findMinNode(node) {
+     while (node.left !== null) {
+       node = node.left;
+     }
+     return node;
+   }
+ }
+
+ min() {
+   let currentNode = this.rootNode;
+   while (currentNode && currentNode.left) {
+       currentNode = currentNode.left;
+   }
+   return currentNode ? currentNode.data : null;  
   }
 
   max() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+   let currentNode = this.rootNode;
+   while (currentNode && currentNode.right) {
+       currentNode = currentNode.right;
+   }
+   return currentNode ? currentNode.data : null;  
   }
 }
 
